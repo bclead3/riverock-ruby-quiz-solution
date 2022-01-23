@@ -18,4 +18,11 @@ RSpec.describe 'ProcessDictionary' do
       expect(subject.file.path).to eq(file.path)
     end
   end
+
+  describe '#extract_array' do
+    it 'runs extract_array on sample words file' do
+      expected_arr = %w[arrows carrots give me]
+      expect(subject.extract_array).to eq(expected_arr)
+    end
+  end
 end
