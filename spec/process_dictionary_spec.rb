@@ -76,4 +76,22 @@ RSpec.describe 'ProcessDictionary' do
       end
     end
   end
+
+  describe '#question_array' do
+    it 'test with spec/data/words' do
+      expected_output = %w[carr give rots rows rrot rrow]
+      str_array = subject.extract_array
+      full_array = subject.process(str_array)
+      expect(subject.question_array(full_array)).to eq(expected_output)
+    end
+  end
+
+  describe '#answer_array' do
+    it 'test with spec/data/words' do
+      expected_output = %w[carrots give carrots arrows carrots arrows]
+      str_array = subject.extract_array
+      full_array = subject.process(str_array)
+      expect(subject.answer_array(full_array)).to eq(expected_output)
+    end
+  end
 end

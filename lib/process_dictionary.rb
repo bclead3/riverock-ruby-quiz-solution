@@ -35,12 +35,28 @@ class ProcessDictionary
     dictionary_h.select { |_k, v| v[:valid] == true }.sort
   end
 
+  def question_array(full_array)
+    output_arr = []
+    full_array.each do |sub_arr|
+      output_arr << sub_arr.first
+    end
+    output_arr
+  end
+
+  def answer_array(full_array)
+    output_arr = []
+    full_array.each do |sub_arr|
+      output_arr << sub_arr[1][:answer]
+    end
+    output_arr
+  end
+
   private
 
   def find_base_dir
     if @file_path.index('/')
       last_index = @file_path.reverse.index('/')
-      @file_path[0..(@file_path.length-1-last_index)]
+      @file_path[0..(@file_path.length - 1 - last_index)]
     else
       './'
     end
