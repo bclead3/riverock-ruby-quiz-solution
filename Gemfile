@@ -1,5 +1,6 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem 'rspec'
 gem 'byebug'
+gem 'rspec'
+gem 'rubocop'
 gem 'zlib'

@@ -1,0 +1,12 @@
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'spec/data/words'
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

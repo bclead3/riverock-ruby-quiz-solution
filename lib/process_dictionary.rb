@@ -7,24 +7,38 @@ require 'byebug'
 class ProcessDictionary
   attr_reader :file_path, :file
 
+  EXTENSION_GZIP = '.gz'
+  NEWLINE_CHAR = "\n"
+
   def initialize(file_path)
     @file_path = file_path
     @file = File.open(@file_path)
   end
 
   def extract_array
-    if File.extname(@file_path) == '.gz'
+    if File.extname(@file_path) == EXTENSION_GZIP
       tar_extract = Gem::Package::TarReader.new(Zlib::GzipReader.open(@file_path))
       tar_extract.rewind
-      ret_str = nil
-      tar_extract.each do |entry|
-        if entry.full_name == 'words' && entry.file?
-          ret_str = entry.read
-          return ret_str.split("\n")
-        end
-      end
+      find_array_from_gzip(tar_extract)
     else
-      @file.read.split("\n")
+      @file.read.split(NEWLINE_CHAR)
+    end
+  end
+
+  private
+
+  def open_tar
+    tar_extract = Gem::Package::TarReader.new(Zlib::GzipReader.open(@file_path))
+    tar_extract.rewind
+  end
+
+  def find_array_from_gzip(tar_extract)
+    ret_str = nil
+    tar_extract.each do |entry|
+      if entry.full_name == 'words' && entry.file?
+        ret_str = entry.read
+        return ret_str.split(NEWLINE_CHAR)
+      end
     end
   end
 end
