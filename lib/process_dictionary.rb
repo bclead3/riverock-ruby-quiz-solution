@@ -35,6 +35,17 @@ class ProcessDictionary
     dictionary_h.select { |_k, v| v[:valid] == true }.sort
   end
 
+  private
+
+  def find_base_dir
+    if @file_path.index('/')
+      last_index = @file_path.reverse.index('/')
+      @file_path[0..(@file_path.length-1-last_index)]
+    else
+      './'
+    end
+  end
+
   def sub_file_iterate(str, dictionary_h)
     str = str.gsub(/[0-9]/, '').gsub("'", '').gsub('.', '')
     str_len = str.length
@@ -45,8 +56,6 @@ class ProcessDictionary
     assign_to_dictionary(dictionary_h, str, str_arr, str_stop)
     dictionary_h
   end
-
-  private
 
   def assign_to_dictionary(dictionary_h, str, str_arr, str_stop)
     (0..str_stop).each do |idx|

@@ -51,4 +51,29 @@ RSpec.describe 'ProcessDictionary' do
       expect(subject.process(subject_arr)).to eq(expected_arr)
     end
   end
+
+  describe '#find_base_dir' do
+    it 'private method #find_base_dir' do
+      expected_path = 'spec/data/'
+      expect(subject.send(:find_base_dir)).to eq(expected_path)
+    end
+
+    describe '#find_base_dir for gz file at the base of the project directory' do
+      let(:subject) { ProcessDictionary.new('words.tar.gz') }
+
+      it 'private method #find_base_dir' do
+        expected_path = './'
+        expect(subject.send(:find_base_dir)).to eq(expected_path)
+      end
+    end
+
+    describe '#find_base_dir for gz file at the base of the project directory' do
+      let(:subject) { ProcessDictionary.new('./words.tar.gz') }
+
+      it 'private method #find_base_dir' do
+        expected_path = './'
+        expect(subject.send(:find_base_dir)).to eq(expected_path)
+      end
+    end
+  end
 end
