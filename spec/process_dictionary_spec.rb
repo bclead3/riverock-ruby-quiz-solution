@@ -36,4 +36,19 @@ RSpec.describe 'ProcessDictionary' do
       end
     end
   end
+
+  describe '#process' do
+    it 'builds sorted hash of four-character words' do
+      expected_arr_size = 6
+      expected_arr = [["carr", {:answer=>"carrots", :valid=>true}],
+                      ["give", {:answer=>"give", :valid=>true}],
+                      ["rots", {:answer=>"carrots", :valid=>true}],
+                      ["rows", {:answer=>"arrows", :valid=>true}],
+                      ["rrot", {:answer=>"carrots", :valid=>true}],
+                      ["rrow", {:answer=>"arrows", :valid=>true}]]
+      subject_arr = subject.extract_array
+      expect(subject.process(subject_arr).size).to eq(expected_arr_size)
+      expect(subject.process(subject_arr)).to eq(expected_arr)
+    end
+  end
 end
