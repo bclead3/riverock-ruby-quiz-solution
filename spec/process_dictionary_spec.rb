@@ -37,7 +37,7 @@ RSpec.describe 'ProcessDictionary' do
     end
   end
 
-  describe '#process' do
+  describe '#process_array_from_file' do
     it 'builds sorted hash of four-character words' do
       expected_arr_size = 6
       expected_arr = [["carr", {:answer=>"carrots", :valid=>true}],
@@ -47,8 +47,8 @@ RSpec.describe 'ProcessDictionary' do
                       ["rrot", {:answer=>"carrots", :valid=>true}],
                       ["rrow", {:answer=>"arrows", :valid=>true}]]
       subject_arr = subject.extract_array
-      expect(subject.process(subject_arr).size).to eq(expected_arr_size)
-      expect(subject.process(subject_arr)).to eq(expected_arr)
+      expect(subject.process_array_from_file(subject_arr).size).to eq(expected_arr_size)
+      expect(subject.process_array_from_file(subject_arr)).to eq(expected_arr)
     end
   end
 
@@ -81,7 +81,7 @@ RSpec.describe 'ProcessDictionary' do
     it 'test with spec/data/words' do
       expected_output = %w[carr give rots rows rrot rrow]
       str_array = subject.extract_array
-      full_array = subject.process(str_array)
+      full_array = subject.process_array_from_file(str_array)
       expect(subject.question_array(full_array)).to eq(expected_output)
     end
   end
@@ -90,7 +90,7 @@ RSpec.describe 'ProcessDictionary' do
     it 'test with spec/data/words' do
       expected_output = %w[carrots give carrots arrows carrots arrows]
       str_array = subject.extract_array
-      full_array = subject.process(str_array)
+      full_array = subject.process_array_from_file(str_array)
       expect(subject.answer_array(full_array)).to eq(expected_output)
     end
   end

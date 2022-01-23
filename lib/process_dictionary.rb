@@ -25,7 +25,7 @@ class ProcessDictionary
     end
   end
 
-  def process(str_arr)
+  def process_array_from_file(str_arr)
     dictionary_h = {}
     str_arr.each do |entry|
       sub_file_iterate(entry, dictionary_h) if entry.length >= 4
