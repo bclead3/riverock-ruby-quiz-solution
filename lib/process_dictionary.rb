@@ -15,6 +15,16 @@ class ProcessDictionary
     @file = File.open(@file_path)
   end
 
+  def process
+    output_arr = process_array_from_file(extract_array)
+    question_arr = question_array(output_arr)
+    answer_arr = answer_array(output_arr)
+
+    q_str = write_question_array(question_arr)
+    a_str = write_answer_array(answer_arr)
+    [q_str, a_str]
+  end
+
   def extract_array
     if File.extname(@file_path) == EXTENSION_GZIP
       tar_extract = Gem::Package::TarReader.new(Zlib::GzipReader.open(@file_path))
@@ -49,6 +59,28 @@ class ProcessDictionary
       output_arr << sub_arr[1][:answer]
     end
     output_arr
+  end
+
+  def write_question_array(output_array)
+    full_file_name = "#{find_base_dir}questions"
+    f = File.new(full_file_name, 'w')
+    num_elements = output_array.size
+    output_array.each do |element|
+      f.write("#{element}\n")
+    end
+    f.close
+    "#{num_elements} words written to questions file"
+  end
+
+  def write_answer_array(output_array)
+    full_file_name = "#{find_base_dir}answers"
+    f = File.new(full_file_name, 'w')
+    num_elements = output_array.size
+    output_array.each do |element|
+      f.write("#{element}\n")
+    end
+    f.close
+    "#{num_elements} words written to answers file"
   end
 
   private

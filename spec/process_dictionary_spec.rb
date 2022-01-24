@@ -94,4 +94,25 @@ RSpec.describe 'ProcessDictionary' do
       expect(subject.answer_array(full_array)).to eq(expected_output)
     end
   end
+
+  describe '#process' do
+    it 'test process' do
+      expected_output_arr = ['6 words written to questions file', '6 words written to answers file']
+      expect(subject.process).to eq(expected_output_arr)
+    end
+
+    it 'confirms the existence of questions' do
+      expected_questions_path = 'spec/data/questions'
+      expected_file_size = 30
+      f = File.open(expected_questions_path)
+      expect(f.size).to eq(expected_file_size)
+    end
+
+    it 'confirms the existence of answers' do
+      expected_answers_path = 'spec/data/answers'
+      expected_file_size = 43
+      f = File.open(expected_answers_path)
+      expect(f.size).to eq(expected_file_size)
+    end
+  end
 end
