@@ -61,26 +61,23 @@ class ProcessDictionary
     output_arr
   end
 
-  def write_question_array(output_array)
-    full_file_name = "#{find_base_dir}questions"
+  def write_array(output_array, file_name)
+    full_file_name = "#{find_base_dir}#{file_name}"
     f = File.new(full_file_name, 'w')
     num_elements = output_array.size
     output_array.each do |element|
       f.write("#{element}\n")
     end
     f.close
-    "#{num_elements} words written to questions file"
+    "#{num_elements} words written to #{file_name} file"
+  end
+
+  def write_question_array(output_array)
+    write_array(output_array, 'questions')
   end
 
   def write_answer_array(output_array)
-    full_file_name = "#{find_base_dir}answers"
-    f = File.new(full_file_name, 'w')
-    num_elements = output_array.size
-    output_array.each do |element|
-      f.write("#{element}\n")
-    end
-    f.close
-    "#{num_elements} words written to answers file"
+    write_array(output_array, 'answers')
   end
 
   private
