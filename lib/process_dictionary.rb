@@ -9,6 +9,7 @@ class ProcessDictionary
 
   EXTENSION_GZIP = '.gz'
   NEWLINE_CHAR = "\n"
+  DEFINED_WORD_LENGTH = 4
 
   def initialize(file_path)
     @file_path = file_path
@@ -20,8 +21,8 @@ class ProcessDictionary
     question_arr = question_array(output_arr)
     answer_arr = answer_array(output_arr)
 
-    q_str = write_question_array(question_arr)
-    a_str = write_answer_array(answer_arr)
+    q_str = write_array(question_arr, 'questions')
+    a_str = write_array(answer_arr, 'answers')
     [q_str, a_str]
   end
 
@@ -38,7 +39,7 @@ class ProcessDictionary
   def process_array_from_file(str_arr)
     dictionary_h = {}
     str_arr.each do |entry|
-      sub_file_iterate(entry, dictionary_h) if entry.length >= 4
+      sub_file_iterate(entry, dictionary_h) if entry.length >= DEFINED_WORD_LENGTH
     end
     # output array of arrays, where each array element has two elements
     # e.g. [ 'valu', { answer: 'value', valid: true } ]
@@ -91,12 +92,19 @@ class ProcessDictionary
     end
   end
 
-  def sub_file_iterate(str, dictionary_h)
-    str = str.gsub(/[0-9]/, '').gsub("'", '').gsub('.', '')
-    str_len = str.length
-    return {} if str.nil? || str_len < 4
+  # Scrub numbers, apostrophes, and periods out of the string
+  def scrub_string(str_val)
+    str_val.gsub(/[0-9]/, '')
+           .gsub("'", '')
+           .gsub('.', '')
+  end
 
-    str_stop = str_len - 4
+  def sub_file_iterate(str, dictionary_h)
+    str = scrub_string(str)
+    str_len = str.length
+    return {} if str.nil? || str_len < DEFINED_WORD_LENGTH
+
+    str_stop = str_len - DEFINED_WORD_LENGTH
     str_arr = str.chars
     assign_to_dictionary(dictionary_h, str, str_arr, str_stop)
     dictionary_h
@@ -104,7 +112,7 @@ class ProcessDictionary
 
   def assign_to_dictionary(dictionary_h, str, str_arr, str_stop)
     (0..str_stop).each do |idx|
-      four_char_str = str_arr[idx..(idx + 3)].join.downcase
+      four_char_str = str_arr[idx..(idx + (DEFINED_WORD_LENGTH - 1))].join.downcase
       if dictionary_h[four_char_str]
         dictionary_h[four_char_str][:valid] = false
         dictionary_h[four_char_str][str] = str
@@ -122,5 +130,6 @@ class ProcessDictionary
         return ret_str.split(NEWLINE_CHAR)
       end
     end
+    []
   end
 end
